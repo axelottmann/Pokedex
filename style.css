@@ -1,12 +1,21 @@
 body {
   font-family: sans-serif;
-  background: rgb(190, 190, 190);
+  background: rgb(158, 158, 158);
   padding: 20px;
+
+
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
   padding-left: 80px;
   color: #333;
+  font-size: 40px;
 }
 
 #pokedex {
@@ -17,19 +26,23 @@ h1 {
   padding-top: 20px;
 }
 
-#pokedex div {
+#pokedex > div {
+  padding-left: 100px;
+  padding-right: 100px;
+  display: flex;
+  flex-direction: column;
   background: white;
-  border: 1px solid #ddd;
+  color: white;
   padding: 12px;
   border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   text-align: center;
-  width: 120px;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  border: 2px solid #222; /* schwarze Umrandung */
 }
 
 img {
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 120px;
 }
 
 .search {
@@ -43,7 +56,6 @@ img {
 input[type="search"] {
   flex: 1 1 0;
   padding: 6px;
-  min-width: 0;
   height: 40px; 
   box-sizing: border-box;
 }
@@ -66,4 +78,3 @@ button#search_button .material-symbols-outlined {
   font-size: 20px;
   color: #ffffff;
 }
-

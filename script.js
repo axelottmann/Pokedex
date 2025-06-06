@@ -16,15 +16,20 @@ function getColorCode(colorName) {
   return colorMap[colorName] || "#fff";
 }
 
+// Zeigt alle Pokémon aus Firebase im DOM an
 async function loadFromFirebase() {
   const response = await fetch(`${BASE_URL}/pokedex.json`);
   const data = await response.json();
 
+  if (!data) {
+    console.warn("Keine Daten in Firebase.");
+    return;
+  }
+
   const pokedexDiv = document.getElementById("pokedex");
   pokedexDiv.innerHTML = "";
 
-  for (const name in data) {
-    const pokemon = data[name];
+  Object.values(data).forEach(pokemon => {
     const color = getColorCode(pokemon.color);
 
     const div = document.createElement("div");
@@ -33,26 +38,24 @@ async function loadFromFirebase() {
     div.style.padding = "10px";
     div.style.textAlign = "center";
     div.style.width = "120px";
+    div.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
+    div.style.flex = "0 0 auto";
 
     div.innerHTML = `
       <h3>${pokemon.name}</h3>
       <img src="${pokemon.sprite}" alt="${pokemon.name}" />
       <p>Typen: ${pokemon.types.join(", ")}</p>
     `;
+
     pokedexDiv.appendChild(div);
-  }
+  });
 }
 
+// Lädt 151 Pokémon von der API und speichert sie in Firebase
 async function fetchAndStorePokemons() {
-  const existing = await fetch(`${BASE_URL}/pokedex.json`);
-  const existingData = await existing.json();
+  await fetch(`${BASE_URL}/pokedex.json`, { method: "DELETE" }); // vorab alles löschen
 
-  if (existingData) {
-    alert("Pokédex ist bereits befüllt.");
-    return;
-  }
-
-  for (let i = 1; i <= 40; i++) {
+  for (let i = 1; i <= 151; i++) {
     try {
       const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
       const pokeData = await pokeRes.json();
@@ -73,13 +76,16 @@ async function fetchAndStorePokemons() {
       });
 
       console.log(`${pokemon.name} gespeichert`);
-
     } catch (error) {
-      console.error("Fehler:", error);
+      console.error("Fehler bei Pokémon ID", i, error);
     }
   }
 
   alert("Pokédex erfolgreich gefüllt!");
+  await loadFromFirebase(); // direkt anzeigen
 }
 
-window.addEventListener("DOMContentLoaded", loadFromFirebase);
+// Beim Laden der Seite automatisch Pokémon anzeigen
+window.addEventListener("DOMContentLoaded", async () => {
+  await loadFromFirebase();
+});

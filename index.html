@@ -4,26 +4,31 @@
   <meta charset="UTF-8" />
   <title>Pokédex</title>
   <script defer src="script.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
 </head>
 <body>
-  <h1>Pokédex</h1>
+  <nav>
+    <h1>Pokédex</h1>
   
-   <form>
-  <div class="search">
-    <input
-      type="search"
-      id="mySearch"
-      name="q"
-      placeholder="Search your Pokemon" />
-    <button id="search_button" type="submit">
-      <span class="material-symbols-outlined">search</span>
-    </button>
-  </div>
-</form>
+    <form>
+      <div class="search">
+        <input
+          type="search"
+          id="mySearch"
+          name="q"
+          placeholder="Search your Pokemon" />
+        <button id="search_button" type="submit">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+      </div>
+    </form>
+  </nav>
+
+  
 
 
   <div id="pokedex"></div>
