@@ -1,91 +1,41 @@
 const BASE_URL = "https://pokemonapp-c8246-default-rtdb.europe-west1.firebasedatabase.app/";
 
-function getColorCode(colorName) {
-  const colorMap = {
-    black: "#333",
-    blue: "#85C1E9",
-    brown: "#A04000",
-    gray: "#B2BABB",
-    green: "#58D68D",
-    pink: "#F5B7B1",
-    purple: "#BB8FCE",
-    red: "#EC7063",
-    white: "#FDFEFE",
-    yellow: "#F9E79F"
-  };
-  return colorMap[colorName] || "#fff";
-}
+let pokemons = [];
+let offset = 0;
+const PAGE_SIZE = 40;
 
-// Zeigt alle Pokémon aus Firebase im DOM an
 async function loadFromFirebase() {
   const response = await fetch(`${BASE_URL}/pokedex.json`);
-  const data = await response.json();
+  pokemons = Object.values(await response.json());
+  offset = 0;
+  renderPokemons();
+}
 
-  if (!data) {
-    console.warn("Keine Daten in Firebase.");
-    return;
-  }
-
+function renderPokemons() {
   const pokedexDiv = document.getElementById("pokedex");
   pokedexDiv.innerHTML = "";
+  const end = Math.min(offset + PAGE_SIZE, pokemons.length);
 
-  Object.values(data).forEach(pokemon => {
-    const color = getColorCode(pokemon.color);
-
-    const div = document.createElement("div");
-    div.style.backgroundColor = color;
-    div.style.borderRadius = "8px";
-    div.style.padding = "10px";
-    div.style.textAlign = "center";
-    div.style.width = "120px";
-    div.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
-    div.style.flex = "0 0 auto";
-
-    div.innerHTML = `
-      <h3>${pokemon.name}</h3>
-      <img src="${pokemon.sprite}" alt="${pokemon.name}" />
-      <p>Typen: ${pokemon.types.join(", ")}</p>
+  for (let i = 0; i < end; i++) {
+    const p = pokemons[i];
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <span class="number">#${i + 1}</span>
+      <img src="${p.sprite}" alt="${p.name}" />
+      <h3>${p.name}</h3>
+      <div class="types">${p.types.map(t => `<span class="type ${t}">${t}</span>`).join("")}</div>
     `;
-
-    pokedexDiv.appendChild(div);
-  });
-}
-
-// Lädt 151 Pokémon von der API und speichert sie in Firebase
-async function fetchAndStorePokemons() {
-  await fetch(`${BASE_URL}/pokedex.json`, { method: "DELETE" }); // vorab alles löschen
-
-  for (let i = 1; i <= 151; i++) {
-    try {
-      const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
-      const pokeData = await pokeRes.json();
-
-      const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
-      const speciesData = await speciesRes.json();
-
-      const pokemon = {
-        name: pokeData.name,
-        sprite: pokeData.sprites.front_default,
-        types: pokeData.types.map(t => t.type.name),
-        color: speciesData.color.name,
-      };
-
-      await fetch(`${BASE_URL}/pokedex/${pokemon.name}.json`, {
-        method: "PUT",
-        body: JSON.stringify(pokemon),
-      });
-
-      console.log(`${pokemon.name} gespeichert`);
-    } catch (error) {
-      console.error("Fehler bei Pokémon ID", i, error);
-    }
+    pokedexDiv.appendChild(card);
   }
 
-  alert("Pokédex erfolgreich gefüllt!");
-  await loadFromFirebase(); // direkt anzeigen
+  if (end < pokemons.length) {
+    const btn = document.createElement("button");
+    btn.textContent = "Read More";
+    btn.className = "read-more";
+    btn.onclick = () => { offset += PAGE_SIZE; renderPokemons(); };
+    pokedexDiv.appendChild(btn);
+  }
 }
 
-// Beim Laden der Seite automatisch Pokémon anzeigen
-window.addEventListener("DOMContentLoaded", async () => {
-  await loadFromFirebase();
-});
+window.addEventListener("DOMContentLoaded", loadFromFirebase);
