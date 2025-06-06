@@ -83,33 +83,3 @@ async function fetchAndStorePokemons() {
 }
 
 window.addEventListener("DOMContentLoaded", loadFromFirebase);
-
-document.getElementById("search_button").addEventListener("click", async () => {
-  const searchInput = document.getElementById("search_input").value.toLowerCase();
-  const response = await fetch(`${BASE_URL}/pokedex.json`);
-  const data = await response.json();
-
-  const pokedexDiv = document.getElementById("pokedex");
-  pokedexDiv.innerHTML = "";
-
-  for (const name in data) {
-    if (name.includes(searchInput)) {
-      const pokemon = data[name];
-      const color = getColorCode(pokemon.color);
-
-      const div = document.createElement("div");
-      div.style.backgroundColor = color;
-      div.style.borderRadius = "8px";
-      div.style.padding = "10px";
-      div.style.textAlign = "center";
-      div.style.width = "120px";
-
-      div.innerHTML = `
-        <h3>${pokemon.name}</h3>
-        <img src="${pokemon.sprite}" alt="${pokemon.name}" />
-        <p>Typen: ${pokemon.types.join(", ")}</p>
-      `;
-      pokedexDiv.appendChild(div);
-    }
-  }
-});
