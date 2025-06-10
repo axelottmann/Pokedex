@@ -9,9 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link rel="icon" href="https://firebasestorage.googleapis.com/..." type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-
 </head>
-<header>
+<body>
+  <header>
     <nav>
       <h1>Pokédex</h1>
     
@@ -28,11 +28,17 @@
         </div>
       </form>
     </nav>
-</header>
-<body>
-  <div id="pokedex">
-    <span class="type">grass</span>
-    <button class="read-more" id="read-more-btn">Read More</button>
+  </header>
+
+  <div id="spinner" style="display:none;">
+    <div class="pokeball-spinner"></div>
+    <div class="loading-text">...loading</div>
   </div>
+
+  <div id="pokemon-overlay" class="overlay" style="display:none;">
+    <div class="overlay-content" id="overlay-content"></div>
+  </div>
+
+  <div id="pokedex"></div>
 </body>
 </html>
