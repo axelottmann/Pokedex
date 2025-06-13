@@ -1,88 +1,178 @@
 body {
-  background-color: #0f1c2e;
-  color: #fff;
+  background-color: white;
+  color: black;
   font-family: 'Segoe UI', sans-serif;
+  align-items: center;
   margin: 0;
   padding: 100px;
+  scroll-behavior: smooth;
 }
 
 nav {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   padding-top: 0;
+  gap: 20px;
+}
+
+a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+p {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-weight: bold;
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 50px;
   margin: 0;
 }
 
-#pokedex {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  padding-top: 40px;
-}
-
-.card {
-  background-color: #1e2a3a;
-  border-radius: 16px;
-  padding: 16px;
-  width: 200px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-  text-align: center;
-  position: relative;
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card img {
-  width: 120px;
-  height: 120px;
-}
-
-.card h3 {
-  margin: 12px 0 4px;
-  font-size: 18px;
-}
-
-.card span.number {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  font-size: 12px;
-  color: #ccc;
-}
-
-.types {
+.container {
   display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 10px;
+  gap: 2rem;
+  padding: 2rem;
 }
 
-.type {
-  padding: 4px 8px;
+.left-panel {
+  flex: 2;
+}
+
+.right-panel {
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 400px;
+}
+
+#overlay-img {
+  width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+#overlay-name {
+  text-align: center;
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+}
+
+#overlay-types {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.pkm-item {
+  display: inline-block;
+  width: 120px;
+  padding: 10px;
+  text-align: center;
+  background: rgba(128, 128, 128, 0.2);
+  margin: 10px;
   border-radius: 8px;
-  font-size: 12px;
-  color: #fff;
+  transition: all 0.2s ease; 
+}
+
+.pkm-item:hover {
+  cursor: pointer;
+  background-color: #B8A038;
+  transform: scale(1.05); 
+}
+
+.pkm-entry-title {
+  font-weight: bold;
+  color: #666;
+  margin: 1rem 0 0.3rem;
+  font-size: 1rem;
+}
+
+.pkm-text {
+  font-style: italic;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.pkm-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pkm-grid div {
+  background: #f8f8f8;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 48%;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.pkm-section {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pkm-section strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.type-tag {
+  display: inline-block;
+  padding: 0.3em 0.6em;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.75rem;
+  margin: 0 0.2em;
   text-transform: capitalize;
 }
+
+
+.type-fire { background-color: #F08030; }
+.type-water { background-color: #6890F0; }
+.type-grass { background-color: #78C850; }
+.type-electric { background-color: #F8D030; color: black; }
+.type-psychic { background-color: #F85888; }
+.type-ice { background-color: #98D8D8; color: black; }
+.type-ground { background-color: #E0C068; color: black; }
+.type-rock { background-color: #B8A038; color: white; }
+.type-flying { background-color: #A890F0; }
+.type-poison { background-color: #A040A0; }
+.type-bug { background-color: #A8B820; }
+.type-dragon { background-color: #7038F8; }
+.type-dark { background-color: #705848; }
+.type-steel { background-color: #B8B8D0; color: black; }
+.type-fairy { background-color: #EE99AC; color: black; }
+.type-fighting { background-color: #C03028; }
+.type-ghost { background-color: #705898; }
+.type-normal { background-color: #A8A878; }
+
 
 .search {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 500px; /* Optional */
+  max-width: 500px;
   margin-bottom: 20px;
 }
 
-/* Suchfeld */
+
 input[type="search"] {
   flex: 1;
   height: 40px;
@@ -103,12 +193,16 @@ button#search_button {
   flex-shrink: 0;
 }
 
+button#search_button:hover {
+  background-color: darkorange;
+}
+
 button#search_button .material-symbols-outlined {
   font-size: 24px;
   color: white;
 }
 
-.read-more {
+.load-more {
   grid-column: 1 / -1; 
   display: flex;
   justify-content: center;
@@ -124,118 +218,83 @@ button#search_button .material-symbols-outlined {
   cursor: pointer;
 }
 
-.read-more:hover {
+.load-more:hover {
   background-color: darkorange;
 }
 
-.type.grass { background-color: #78C850; }
-.type.fire { background-color: #F08030; }
-.type.water { background-color: #6890F0; }
-.type.bug { background-color: #A8B820; }
-.type.normal { background-color: #A8A878; }
-.type.poison { background-color: #A040A0; }
-.type.electric { background-color: #F8D030; }
-.type.ground { background-color: #E0C068; }
-.type.fairy { background-color: #EE99AC; }
-.type.fighting { background-color: #C03028; }
-.type.psychic { background-color: #F85888; }
-.type.rock { background-color: #B8A038; }
-.type.ghost { background-color: #705898; }
-.type.ice { background-color: #98D8D8; }
-.type.dragon { background-color: #7038F8; }
-
-#spinner {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+.type-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 4px 4px 0 0;
+  border-radius: 12px;
+  font-size: 0.9em;
+  color: white;
+  text-transform: capitalize;
 }
 
-.loading-text {
-  color: #fff;
-  font-size: 18px;
-  margin-top: 18px;
+footer {
   text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-  letter-spacing: 2px;
-  opacity: 0.8;
+  width: 100%;
+  padding: 20px;
+  margin-top: 350px;
+  font-size: 14px;
+  color: #ccc;
 }
 
-.pokeball-spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #fff;
-  border-top: 6px solid #ef5350;
-  border-radius: 50%;
-  position: relative;
-  animation: spin 1s linear infinite;
-  box-shadow: 0 0 16px #222;
+@media (max-width: 600px) {
+  body {
+    padding: 20px;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  #content {
+    gap: 6px;
+    justify-content: center;
+    padding-top: 10px;
+  }
+  .pkm-item {
+    width: 90px;
+    padding: 6px;
+  }
+  .pkm-item img {
+    width: 70px;
+    height: 70px;
+  }
+  .overlay-content {
+    padding: 16px 6px;
+    min-width: 0;
+    width: 95vw;
+    font-size: 1em;
+  }
+  .overlay-content img {
+    width: 80px;
+    height: 80px;
+  }
+  .read-more {
+    padding: 6px 10px;
+    font-size: 1em;
+  }
+  .search {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  input[type="search"] {
+    font-size: 14px;
+    height: 32px;
+  }
+  button#search_button {
+    height: 32px;
+    width: 32px;
+  }
+
+  .right-panel {
+    padding: 1rem;
+  }
 }
 
-.pokeball-spinner::before {
-  content: "";
-  position: absolute;
-  top: 26px;
-  left: 0;
-  width: 60px;
-  height: 8px;
-  background: #222;
-  border-radius: 4px;
-}
-
-.pokeball-spinner::after {
-  content: "";
-  position: absolute;
-  top: 22px;
-  left: 22px;
-  width: 16px;
-  height: 16px;
-  background: #fff;
-  border: 4px solid #222;
-  border-radius: 50%;
-  z-index: 2;
-}
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-/* Overlay Hintergrund */
-.overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-}
-
-/* Overlay-Inhalt */
-.overlay-content {
-  background: #1e2a3a;
-  color: #fff;
-  border-radius: 16px;
-  padding: 32px 24px;
-  min-width: 260px;
-  max-width: 90vw;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-  text-align: center;
-  position: relative;
-}
-.overlay-content img {
-  width: 120px;
-  height: 120px;
-}
-.overlay-content .close-btn {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 28px;
-  cursor: pointer;
+@media (min-width: 768px) {
+  .right-panel {
+    padding: 2rem;
+  }
 }

@@ -30,15 +30,28 @@
     </nav>
   </header>
 
-  <div id="spinner" style="display:none;">
-    <div class="pokeball-spinner"></div>
-    <div class="loading-text">...loading</div>
-  </div>
+    <div id="spinner" style="display:none;">
+      <div class="pokeball-spinner"></div>
+    </div>
 
-  <div id="pokemon-overlay" class="overlay" style="display:none;">
-    <div class="overlay-content" id="overlay-content"></div>
-  </div>
+    <div class="container">
+      <div class="left-panel">
+        <div id="content"></div>
+        <button id="load-more" class="load-more">Skip</button>
+      </div>
 
-  <div id="pokedex"></div>
+      <div class="right-panel" id="detail-panel" style="display: none;">
+       <img id="overlay-img" />
+        <h2 id="overlay-name"></h2>
+        <div id="overlay-types"></div>
+        <div id="overlay-info"></div>
+      </div>
+    </div>
+
+
+  <footer>
+    <p><a href="index.html">© 2025 Pokédex</a></p>
+    <p><a href="impressum.html">Impressum</a></p>
+    <p><a href="datenschutz.html">Datenschutz</a></p>
 </body>
 </html>
