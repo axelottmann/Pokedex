@@ -4,7 +4,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   align-items: center;
   margin: 0;
-  padding: 100px;
+  padding: 0;
   scroll-behavior: smooth;
 }
 
@@ -14,10 +14,11 @@ nav {
   align-items: center;
   padding-top: 0;
   gap: 20px;
+  background-color: red;
 }
 
 a {
-  color: rgb(0, 0, 0);
+  color: black;
   text-decoration: none;
   font-weight: bold;
 }
@@ -31,12 +32,35 @@ p {
 h1 {
   font-size: 50px;
   margin: 0;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  font-size: 30px;
+  margin: 0;
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+
+.impressum {
+  text-align: center;
+}
+
+.datenschutz {
+  padding-left: 200px;
+  padding-right: 200px;
+  
 }
 
 .container {
   display: flex;
   gap: 2rem;
   padding: 2rem;
+  max-width: 1200px;   /* maximale Breite */
+  margin: 0 auto;
 }
 
 .left-panel {
@@ -86,7 +110,7 @@ h1 {
 
 .pkm-item:hover {
   cursor: pointer;
-  background-color: #B8A038;
+  background-color: rgb(255, 164, 164);
   transform: scale(1.05); 
 }
 
@@ -239,6 +263,7 @@ footer {
   margin-top: 350px;
   font-size: 14px;
   color: #ccc;
+  background-color: rgb(209, 209, 209);
 }
 
 @media (max-width: 600px) {
