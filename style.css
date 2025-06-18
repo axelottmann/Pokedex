@@ -1,4 +1,4 @@
-body {
+html, body {
   background-color: white;
   color: black;
   font-family: 'Segoe UI', sans-serif;
@@ -34,7 +34,7 @@ h1 {
   margin: 0;
   padding-bottom: 20px;
   padding-top: 20px;
-  color: white;
+  color: black;
 }
 
 h2 {
@@ -43,23 +43,26 @@ h2 {
   margin: 0;
   padding-bottom: 10px;
   padding-top: 20px;
+  color: black;
 }
 
 .impressum {
   text-align: center;
+  padding-top: 100px;
 }
 
 .datenschutz {
-  padding-left: 200px;
-  padding-right: 200px;
-  
+  padding-left: 400px;
+  padding-right: 400px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .container {
   display: flex;
   gap: 2rem;
   padding: 2rem;
-  max-width: 1200px;   /* maximale Breite */
+  max-width: 1200px;   
   margin: 0 auto;
 }
 
@@ -196,6 +199,52 @@ h2 {
   margin-bottom: 20px;
 }
 
+#spinner {
+  position: fixed;
+  inset: 0;
+  background-color: #000; 
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.pokeball-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid white;
+  border-radius: 50%;
+  position: relative;
+  animation: spin 1s linear infinite;
+}
+
+.pokeball-spinner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: white;
+  border-top-left-radius: 50% 50%;
+  border-top-right-radius: 50% 50%;
+}
+
+.pokeball-spinner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: white;
+  transform: translateY(-50%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 input[type="search"] {
   flex: 1;
@@ -258,56 +307,84 @@ button#search_button .material-symbols-outlined {
 
 footer {
   text-align: center;
-  width: 100%;
   padding: 20px;
-  margin-top: 350px;
+  margin-top: 100px;
   font-size: 14px;
   color: #ccc;
   background-color: rgb(209, 209, 209);
 }
 
-@media (max-width: 600px) {
-  body {
-    padding: 20px;
+@media (min-width: 768px) {
+
+  .right-panel {
+    padding: 2rem;
   }
+  .datenschutz {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+
+}
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 0px;
+  }
+  
   h1 {
     font-size: 32px;
+    padding-bottom: 0;
   }
+
   #content {
     gap: 6px;
     justify-content: center;
     padding-top: 10px;
   }
+
   .pkm-item {
     width: 90px;
     padding: 6px;
   }
+
   .pkm-item img {
     width: 70px;
     height: 70px;
   }
+
+  .datenschutz {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
   .overlay-content {
     padding: 16px 6px;
     min-width: 0;
     width: 95vw;
     font-size: 1em;
   }
+
   .overlay-content img {
     width: 80px;
     height: 80px;
   }
+
   .read-more {
     padding: 6px 10px;
     font-size: 1em;
   }
+
   .search {
     max-width: 100%;
-    margin-bottom: 10px;
   }
+
   input[type="search"] {
     font-size: 14px;
     height: 32px;
   }
+
   button#search_button {
     height: 32px;
     width: 32px;
@@ -316,10 +393,11 @@ footer {
   .right-panel {
     padding: 1rem;
   }
+
+  footer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 }
 
-@media (min-width: 768px) {
-  .right-panel {
-    padding: 2rem;
-  }
-}
+
