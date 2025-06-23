@@ -3,26 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pokédex</title>
-  <script defer src="script.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script defer src="script.js"></script>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="icon" href="https://firebasestorage.googleapis.com/..." type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <body>
   <header>
     <nav>
       <h1><a href="index.html">Pokédex</a></h1>
-
-    
       <form>
         <div class="search">
-          <input
-            type="search"
-            id="mySearch"
-            name="q"
-            placeholder="Search your Pokemon" />
+          <input type="search" id="mySearch" name="q" placeholder="Search your Pokemon" />
           <button id="search_button" type="submit">
             <span class="material-symbols-outlined">search</span>
           </button>
@@ -31,28 +24,41 @@
     </nav>
   </header>
 
-    <div id="spinner" style="display:none;">
-      <div class="pokeball-spinner"></div>
+  <!-- Pokéball Spinner -->
+  <div id="spinner" style="display:none;">
+    <div class="pokeball-spinner"></div>
+  </div>
+
+  <!-- Hauptinhalt -->
+  <div class="container">
+    <div class="left-panel">
+      <div id="content"></div>
+      <button id="load-more" class="load-more">Skip</button>
     </div>
+  </div>
 
-    <div class="container">
-      <div class="left-panel">
-        <div id="content"></div>
-        <button id="load-more" class="load-more">Skip</button>
+  <!-- Pokémon-Overlay -->
+  <div id="overlay-bg">
+    <div id="overlay-card">
+      <span id="overlay-close">×</span>
+      <div id="overlay-img-box">
+        <img id="overlay-img" />
       </div>
-
-      <div class="right-panel" id="detail-panel" style="display: none;">
-       <img id="overlay-img" />
-        <h2 id="overlay-name"></h2>
-        <div id="overlay-types"></div>
-        <div id="overlay-info"></div>
+      <h2 id="overlay-name"></h2>
+      <div id="overlay-types"></div>
+      <div id="overlay-info"></div>
+      <div class="overlay-nav">
+        <button id="prev-btn">←</button>
+        <button id="next-btn">→</button>
       </div>
     </div>
+  </div>
 
-
+  <!-- Footer -->
   <footer>
     <p><a href="index.html">© 2025 Pokédex</a></p>
     <p><a href="impressum.html">Impressum</a></p>
     <p><a href="datenschutz.html">Datenschutz</a></p>
+  </footer>
 </body>
 </html>

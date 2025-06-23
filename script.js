@@ -2,10 +2,22 @@ const BASE_URL = "https://pokemonapp-c8246-default-rtdb.europe-west1.firebasedat
 let currentPkList = [];
 let listStart = 0;
 const LIST_STEP = 20;
+let currentIndex = 0;
+let allPokemon = [];
 
-window.addEventListener("DOMContentLoaded", loadAndShowPkm);
-document.getElementById("load-more").addEventListener("click", loadMore);
-document.querySelector("form").addEventListener("submit", searchPokemon);
+window.addEventListener("DOMContentLoaded", () => {
+  loadAndShowPkm();
+
+  document.getElementById("load-more").addEventListener("click", loadMore);
+  document.querySelector("form").addEventListener("submit", searchPokemon);
+
+  document.getElementById('overlay-close').addEventListener('click', closeOverlay);
+  document.getElementById('next-btn').addEventListener('click', showNext);
+  document.getElementById('prev-btn').addEventListener('click', showPrev);
+  document.getElementById('overlay-bg').addEventListener('click', (e) => {
+    if (e.target.id === 'overlay-bg') closeOverlay();
+  });
+});
 
 async function loadAndShowPkm() {
   toggleSpinner(true);
@@ -30,6 +42,12 @@ function render(list, replace = false) {
     div.onclick = () => showOverlay(p);
     box.appendChild(div);
   });
+
+  renderIndexList(list);
+}
+
+function renderIndexList(pokemons) {
+  allPokemon = pokemons;
 }
 
 function searchPokemon(e) {
@@ -40,6 +58,7 @@ function searchPokemon(e) {
 }
 
 async function loadMore() {
+  document.body.classList.remove('noscroll');
   toggleSpinner(true);
   listStart += LIST_STEP;
   await loadPkms(listStart, listStart + LIST_STEP);
@@ -52,51 +71,78 @@ function toggleSpinner(show) {
 }
 
 async function showOverlay(pokemon) {
+  document.body.classList.add('noscroll');
   document.getElementById('overlay-img').src = pokemon.sprite;
   document.getElementById('overlay-name').textContent = pokemon.name;
-  document.getElementById('overlay-types').innerHTML =
-    pokemon.types.map(t => `<span class="type-tag type-${t.toLowerCase()}">${t}</span>`).join('');
+  document.getElementById('overlay-types').innerHTML = renderTypes(pokemon.types);
 
-  let info = { flavor: '-', genus: '-', abilities: '-', stats: '-', height: '-', weight: '-', evo: '-' };
+  const overlayCard = document.getElementById('overlay-card');
+  overlayCard.className = `type-bg-${pokemon.types[0].toLowerCase()}`;
 
+  const { statsHTML, abilities, flavor, evolution } = await fetchPokemonDetails(pokemon.name);
+  document.getElementById('overlay-info').innerHTML = renderInfo({ flavor, abilities, statsHTML, evolution });
+
+  document.getElementById('overlay-bg').style.display = 'flex';
+  currentIndex = allPokemon.findIndex(p => p.name === pokemon.name);
+}
+
+function renderTypes(types) {
+  return types.map(t => `<span class="type-tag type-${t.toLowerCase()}">${t}</span>`).join('');
+}
+
+function renderInfo({ flavor, abilities, statsHTML, evolution }) {
+  return `
+    <br><div>${flavor}</div>
+    <br><div><strong>Abilities:</strong> ${abilities}</div>
+    <div><strong>Stats:</strong><br>${statsHTML}</div><br>
+    <br><div><strong>Evolution:</strong> ${evolution}</div><br>
+  `;
+}
+
+async function fetchPokemonDetails(name) {
   try {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name.toLowerCase()}`);
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
     const data = await res.json();
 
-    info.abilities = data.abilities.map(a => a.ability.name).join(", ");
-    info.stats = data.stats.map(s => `${s.stat.name}: ${s.base_stat}`).join(", ");
-    info.height = data.height / 10;
-    info.weight = data.weight / 10;
+    const statsHTML = data.stats.map(s => `<div><strong>${s.stat.name}</strong>: ${s.base_stat}</div>`).join('');
+    const abilities = data.abilities.map(a => a.ability.name).join(', ');
 
-    const speciesRes = await fetch(data.species.url);
-    const speciesData = await speciesRes.json();
-    info.genus = speciesData.genera.find(g => g.language.name === 'en')?.genus ?? '-';
-    info.flavor = speciesData.flavor_text_entries.find(e => e.language.name === 'en')?.flavor_text.replace(/[\n\f]/g, ' ') ?? '-';
+    const speciesData = await (await fetch(data.species.url)).json();
+    const flavor = speciesData.flavor_text_entries.find(e => e.language.name === 'en')?.flavor_text.replace(/[\n\f]/g, ' ') ?? '-';
 
-    const evoRes = await fetch(speciesData.evolution_chain.url);
-    const evoData = await evoRes.json();
-    let evoLine = evoData.chain;
-    const evos = [evoLine.species.name];
-    while (evoLine.evolves_to?.[0]) {
-      evoLine = evoLine.evolves_to[0];
-      evos.push(evoLine.species.name);
-    }
-    info.evo = evos.join(" → ");
+    const evoData = await (await fetch(speciesData.evolution_chain.url)).json();
+    const evolution = parseEvolutionChain(evoData.chain);
+
+    return { statsHTML, abilities, flavor, evolution };
   } catch (e) {
-    console.warn("Fehler beim Laden:", e);
+    console.warn("Fehler bei Details:", e);
+    return { statsHTML: '-', abilities: '-', flavor: '-', evolution: '-' };
   }
+}
 
-  document.getElementById('overlay-info').innerHTML = `
-    <div class="pkm-entry-title">Pokédex Entry</div>
-    <div class="pkm-text">${info.flavor}</div>
-    <div class="pkm-grid">
-      <div><strong>Height</strong><br><span>${info.height} m</span></div>
-      <div><strong>Weight</strong><br><span>${info.weight} kg</span></div>
-    </div>
-    <div class="pkm-section"><strong>Abilities</strong><div>${info.abilities}</div></div>
-    <div class="pkm-section"><strong>Stats</strong><div>${info.stats}</div></div>
-    <div class="pkm-section"><strong>Evolution</strong><div>${info.evo}</div></div>
-  `;
+function parseEvolutionChain(chain) {
+  const evos = [chain.species.name];
+  while (chain.evolves_to?.[0]) {
+    chain = chain.evolves_to[0];
+    evos.push(chain.species.name);
+  }
+  return evos.join(' → ');
+}
 
-  document.getElementById('detail-panel').style.display = 'block';
+
+function closeOverlay() {
+  document.getElementById('overlay-bg').style.display = 'none';
+  document.body.classList.remove('noscroll');
+}
+
+function showNext() {
+  if (currentIndex < allPokemon.length - 1) {
+    showOverlay(allPokemon[currentIndex + 1]);
+  }
+}
+
+function showPrev() {
+  if (currentIndex > 0) {
+    showOverlay(allPokemon[currentIndex - 1]);
+  }
 }

@@ -8,6 +8,10 @@ html, body {
   scroll-behavior: smooth;
 }
 
+body.noscroll {
+  overflow: hidden;
+}
+
 nav {
   display: flex;
   flex-direction: column;
@@ -18,7 +22,7 @@ nav {
 }
 
 a {
-  color: black;
+  color: white;
   text-decoration: none;
   font-weight: bold;
 }
@@ -58,6 +62,8 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+
+
 .container {
   display: flex;
   gap: 2rem;
@@ -82,22 +88,53 @@ h2 {
   max-width: 400px;
 }
 
-#overlay-img {
-  width: 150px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+.pkm-item span,
+  #overlay-name {
+  text-transform: capitalize;
+  }
+
+#overlay-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
 }
 
-#overlay-name {
-  text-align: center;
-  font-size: 1.8rem;
-  margin: 0.5rem 0;
+#overlay-card {
+  background: inherit;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
 }
 
-#overlay-types {
+#overlay-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+#overlay-img-box {
   text-align: center;
-  margin-bottom: 1rem;
+}
+
+.overlay-nav {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.overlay-nav button {
+  font-size: 20px;
+  margin: 0 10px;
+  cursor: pointer;
 }
 
 .pkm-item {
@@ -165,30 +202,31 @@ h2 {
   padding: 0.3em 0.6em;
   border-radius: 999px;
   color: white;
+  background: grey;
   font-size: 0.75rem;
   margin: 0 0.2em;
   text-transform: capitalize;
 }
 
 
-.type-fire { background-color: #F08030; }
-.type-water { background-color: #6890F0; }
-.type-grass { background-color: #78C850; }
-.type-electric { background-color: #F8D030; color: black; }
-.type-psychic { background-color: #F85888; }
-.type-ice { background-color: #98D8D8; color: black; }
-.type-ground { background-color: #E0C068; color: black; }
-.type-rock { background-color: #B8A038; color: white; }
-.type-flying { background-color: #A890F0; }
-.type-poison { background-color: #A040A0; }
-.type-bug { background-color: #A8B820; }
-.type-dragon { background-color: #7038F8; }
-.type-dark { background-color: #705848; }
-.type-steel { background-color: #B8B8D0; color: black; }
-.type-fairy { background-color: #EE99AC; color: black; }
-.type-fighting { background-color: #C03028; }
-.type-ghost { background-color: #705898; }
-.type-normal { background-color: #A8A878; }
+#overlay-card.type-bg-fire { background-color: #F08030; color: white;}
+#overlay-card.type-bg-water { background-color: #6890F0; color: white;}
+#overlay-card.type-bg-grass { background-color: #78C850; color: white;}
+#overlay-card.type-bg-electric { background-color: #F8D030; color: white;}
+#overlay-card.type-bg-psychic { background-color: #F85888; color: white;}
+#overlay-card.type-bg-ice { background-color: #98D8D8; color: white;}
+#overlay-card.type-bg-ground { background-color: #E0C068; color: white;}
+#overlay-card.type-bg-rock { background-color: #B8A038; color: white; }
+#overlay-card.type-bg-flying { background-color: #A890F0; color: white;}
+#overlay-card.type-bg-poison { background-color: #A040A0; color: white;}
+#overlay-card.type-bg-bug { background-color: #A8B820; color: white;}
+#overlay-card.type-bg-dragon { background-color: #7038F8; color: white;}
+#overlay-card.type-bg-dark { background-color: #705848; color: white;}
+#overlay-card.type-bg-steel { background-color: #B8B8D0; color: white;}
+#overlay-card.type-bg-fairy { background-color: #EE99AC; color: white;}
+#overlay-card.type-bg-fighting { background-color: #C03028; color: white;}
+#overlay-card.type-bg-ghost { background-color: #705898; color: white;}
+#overlay-card.type-bg-normal { background-color: #A8A878; color: white;}
 
 
 .search {
@@ -310,8 +348,7 @@ footer {
   padding: 20px;
   margin-top: 100px;
   font-size: 14px;
-  color: #ccc;
-  background-color: rgb(209, 209, 209);
+  background-color: red;
 }
 
 @media (min-width: 768px) {
@@ -349,9 +386,9 @@ footer {
     padding: 6px;
   }
 
-  .pkm-item img {
-    width: 70px;
-    height: 70px;
+  .overlay-img {
+    width: 200px;
+    height: 200px;
   }
 
   .datenschutz {
@@ -367,8 +404,8 @@ footer {
   }
 
   .overlay-content img {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
 
   .read-more {
