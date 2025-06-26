@@ -7,12 +7,14 @@
   <script defer src="script.js"></script>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="./img/logo-pokemon.png" type="image/x-icon"/>
 </head>
 <body>
   <header>
-    <nav>
-      <h1><a href="index.html">Pokédex</a></h1>
+    <nav class="navbar">
+      <a href="index.html">
+      <img src="./img/logo-pokemon.png" alt="Pokédex Logo" class="logo">
+      </a>
       <form>
         <div class="search">
           <input type="search" id="mySearch" name="q" placeholder="Search your Pokemon" />
@@ -37,7 +39,7 @@
     </div>
   </div>
 
-  <!-- Pokémon-Overlay -->
+  <!-- Overlay -->
   <div id="overlay-bg">
     <div id="overlay-card">
       <span id="overlay-close">×</span>

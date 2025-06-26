@@ -1,7 +1,7 @@
 html, body {
-  background-color: white;
+  background-color: rgb(202, 202, 202);
   color: black;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Rubik', sans-serif;
   align-items: center;
   margin: 0;
   padding: 0;
@@ -12,13 +12,20 @@ body.noscroll {
   overflow: hidden;
 }
 
-nav {
+.navbar {
   display: flex;
-  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  padding-top: 0;
-  gap: 20px;
-  background-color: red;
+  gap: 15px;
+  padding: 20px;
+  background-color: #ef5350;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.navbar .logo {
+  height: 80px;
+  max-width: 1200px;
 }
 
 a {
@@ -62,8 +69,6 @@ h2 {
   overflow-wrap: anywhere;
 }
 
-
-
 .container {
   display: flex;
   gap: 2rem;
@@ -73,25 +78,21 @@ h2 {
 }
 
 .left-panel {
-  flex: 2;
+  flex: initial; 
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
 }
 
-.right-panel {
-  position: sticky;
-  top: 2rem;
-  align-self: flex-start;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
-  max-width: 400px;
+.pkm-item {
+  width: 140px;
+  padding: 10px;
+  text-align: center;
+  background: #e9e3c7;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
 }
-
-.pkm-item span,
-  #overlay-name {
-  text-transform: capitalize;
-  }
 
 #overlay-bg {
   position: fixed;
@@ -104,14 +105,17 @@ h2 {
 }
 
 #overlay-card {
-  background: inherit;
+  background: rgba(245, 245, 245, 0.822);
+  color: black;      
   padding: 20px;
+  text-transform: capitalize;
   border-radius: 10px;
   max-width: 500px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 #overlay-close {
@@ -137,97 +141,83 @@ h2 {
   cursor: pointer;
 }
 
-.pkm-item {
-  display: inline-block;
-  width: 120px;
-  padding: 10px;
-  text-align: center;
-  background: rgba(128, 128, 128, 0.2);
-  margin: 10px;
-  border-radius: 8px;
-  transition: all 0.2s ease; 
-}
-
-.pkm-item:hover {
-  cursor: pointer;
-  background-color: rgb(255, 164, 164);
-  transform: scale(1.05); 
-}
-
-.pkm-entry-title {
-  font-weight: bold;
-  color: #666;
-  margin: 1rem 0 0.3rem;
-  font-size: 1rem;
-}
-
-.pkm-text {
-  font-style: italic;
-  color: #444;
-  margin-bottom: 1rem;
-}
-
-.pkm-grid {
+.overlay-types {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  align-items: center;
 }
 
-.pkm-grid div {
-  background: #f8f8f8;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  width: 48%;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.pkm-section {
-  margin-bottom: 1rem;
+.pokemon-card {
+  text-transform: capitalize;
+  background: linear-gradient(145deg, hwb(52 73% 15%), rgb(202, 202, 202));
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  gap: 2px;
 }
 
-.pkm-section strong {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-size: 0.95rem;
-  color: #222;
+.pokemon-card:hover {
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
-.type-tag {
-  display: inline-block;
-  padding: 0.3em 0.6em;
-  border-radius: 999px;
-  color: white;
-  background: grey;
-  font-size: 0.75rem;
-  margin: 0 0.2em;
+.pokemon-img {
+  width: 100px;
+  height: 100px;
+}
+
+.pokemon-card h3 {
+  margin: 10px 0 5px;
+  font-size: 1rem;
+  color: #333;
   text-transform: capitalize;
 }
 
+.type-container {
+  margin-top: 8px;
+}
 
-#overlay-card.type-bg-fire { background-color: #F08030; color: white;}
-#overlay-card.type-bg-water { background-color: #6890F0; color: white;}
-#overlay-card.type-bg-grass { background-color: #78C850; color: white;}
-#overlay-card.type-bg-electric { background-color: #F8D030; color: white;}
-#overlay-card.type-bg-psychic { background-color: #F85888; color: white;}
-#overlay-card.type-bg-ice { background-color: #98D8D8; color: white;}
-#overlay-card.type-bg-ground { background-color: #E0C068; color: white;}
-#overlay-card.type-bg-rock { background-color: #B8A038; color: white; }
-#overlay-card.type-bg-flying { background-color: #A890F0; color: white;}
-#overlay-card.type-bg-poison { background-color: #A040A0; color: white;}
-#overlay-card.type-bg-bug { background-color: #A8B820; color: white;}
-#overlay-card.type-bg-dragon { background-color: #7038F8; color: white;}
-#overlay-card.type-bg-dark { background-color: #705848; color: white;}
-#overlay-card.type-bg-steel { background-color: #B8B8D0; color: white;}
-#overlay-card.type-bg-fairy { background-color: #EE99AC; color: white;}
-#overlay-card.type-bg-fighting { background-color: #C03028; color: white;}
-#overlay-card.type-bg-ghost { background-color: #705898; color: white;}
-#overlay-card.type-bg-normal { background-color: #A8A878; color: white;}
+.type-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 4px 2px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  color: white;
+  text-transform: capitalize;
+  font-weight: bold;
+}
 
+#content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+
+#overlay-card.type-bg-bug       { background-color: #A8B820; color: black; }
+#overlay-card.type-bg-flying    { background-color: #A890F0; color: black; }
+#overlay-card.type-bg-fire      { background-color: #F08030; color: black; }
+#overlay-card.type-bg-water     { background-color: #6890F0; color: black; }
+#overlay-card.type-bg-grass     { background-color: #78C850; color: black; }
+#overlay-card.type-bg-poison    { background-color: #A040A0; color: black; }
+#overlay-card.type-bg-electric  { background-color: #F8D030; color: black; }
+#overlay-card.type-bg-psychic   { background-color: #F85888; color: black; }
+#overlay-card.type-bg-ice       { background-color: #98D8D8; color: black; }
+#overlay-card.type-bg-rock      { background-color: #B8A038; color: black; }
+#overlay-card.type-bg-ground    { background-color: #E0C068; color: black; }
+#overlay-card.type-bg-dragon    { background-color: #7038F8; color: black; }
+#overlay-card.type-bg-dark      { background-color: #705848; color: black; }
+#overlay-card.type-bg-steel     { background-color: #B8B8D0; color: black; }
+#overlay-card.type-bg-fairy     { background-color: #EE99AC; color: black; }
+#overlay-card.type-bg-fighting  { background-color: #C03028; color: black; }
+#overlay-card.type-bg-ghost     { background-color: #705898; color: black; }
+#overlay-card.type-bg-normal    { background-color: #A8A878; color: black; }
 
 .search {
   display: flex;
@@ -348,93 +338,66 @@ footer {
   padding: 20px;
   margin-top: 100px;
   font-size: 14px;
-  background-color: red;
-}
-
-@media (min-width: 768px) {
-
-  .right-panel {
-    padding: 2rem;
-  }
-  .datenschutz {
-  padding-left: 50px;
-  padding-right: 50px;
+  background-color: #ef5350;
 }
 
 
+@media (min-width: 1024px) {
+  .pokemon-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-@media (max-width: 600px) {
 
-  body {
-    padding: 0px;
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pokemon-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  h1 {
-    font-size: 32px;
-    padding-bottom: 0;
-  }
+}
 
-  #content {
-    gap: 6px;
-    justify-content: center;
-    padding-top: 10px;
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .pokemon-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .pkm-item {
-    width: 90px;
-    padding: 6px;
-  }
-
-  .overlay-img {
-    width: 200px;
-    height: 200px;
-  }
-
-  .datenschutz {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-
-  .overlay-content {
-    padding: 16px 6px;
-    min-width: 0;
-    width: 95vw;
-    font-size: 1em;
-  }
-
-  .overlay-content img {
-    width: 100px;
-    height: 100px;
-  }
-
-  .read-more {
-    padding: 6px 10px;
-    font-size: 1em;
-  }
-
-  .search {
-    max-width: 100%;
-  }
-
-  input[type="search"] {
-    font-size: 14px;
-    height: 32px;
-  }
-
-  button#search_button {
-    height: 32px;
-    width: 32px;
-  }
-
-  .right-panel {
+  .pokemon-card {
     padding: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+
+@media (max-width: 479px) {
+  .pokemon-grid {
+    grid-template-columns: 1fr;
   }
 
-  footer {
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
+  .pokemon-card {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .pokemon-card img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
+@media (max-width: 400px) {
+ #content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+}
 
