@@ -12,15 +12,19 @@ body.noscroll {
   overflow: hidden;
 }
 
+.navbar-bg {
+  width: 100%;
+  background: #ef5350;
+}
+
 .navbar {
+  max-width: 1200px;     
+  margin: 0 auto;
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
-  gap: 15px;
-  padding: 20px;
-  background-color: #ef5350;
-  color: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  justify-content: space-evenly;
+  padding: 20px 16px;    
+  box-sizing: border-box;
 }
 
 .navbar .logo {
