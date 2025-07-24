@@ -1,7 +1,4 @@
-// Pokedex App Script
-
-const BASE_URL = "https://pokemonapp-c8246-default-rtdb.europe-west1.firebasedatabase.app/pokedex.json";
-const POKEAPI_URL = "https://pokeapi.co/api/v2/pokemon/";
+const BASE_URL = "https://pokemonapp-c8246-default-rtdb.europe-west1.firebasedatabase.app/.json";
 
 let allPokemon = [];
 let currentList = [];
@@ -12,7 +9,8 @@ let currentIndex = 0;
 window.addEventListener("DOMContentLoaded", async () => {
   toggleSpinner(true);
   await fetchAllPokemon();
-  render(currentList = allPokemon.slice(0, LIST_STEP), true);
+  currentList = allPokemon.slice(0, LIST_STEP);
+  render(currentList, true);
   toggleSpinner(false);
 
   document.getElementById("load-more").addEventListener("click", loadMore);
@@ -31,53 +29,43 @@ async function fetchAllPokemon() {
   try {
     const res = await fetch(BASE_URL);
     const data = await res.json();
-    allPokemon = Object.values(data);
 
-    // Hole ID aus PokeAPI und sortiere
-    allPokemon = await Promise.all(allPokemon.map(async p => {
-      try {
-        const res = await fetch(POKEAPI_URL + p.name.toLowerCase());
-        const apiData = await res.json();
-        return { ...p, id: apiData.id };
-      } catch {
-        return { ...p, id: 9999 }; // fallback
-      }
-    }));
+    if (!data) {
+      console.error("Keine Pokémon-Daten gefunden!");
+      allPokemon = [];
+      return;
+    }
 
-    allPokemon.sort((a, b) => a.id - b.id);
-  } catch (err) {
-    console.error("Fehler beim Laden der Pokémon:", err);
+    allPokemon = Object.values(data).sort((a, b) => a.number - b.number);
+  } catch (e) {
+    console.error("Fehler beim Abrufen der Pokémon-Daten:", e);
+    allPokemon = [];
   }
 }
 
 function render(list, replace = false) {
   const box = document.getElementById("content");
   if (replace) box.innerHTML = "";
-  list.forEach((p) => {
-    const div = document.createElement("div");
-    div.className = "pokemon-card";
-    div.innerHTML = `
-      <img src="${p.sprite}" alt="${p.name}" class="pokemon-img" />
-      <p class="pokemon-name">#${p.id} ${capitalize(p.name)}</p>
-      <div class="type-container">
-        ${p.types.map(t => `<span class="type-badge type-${t.toLowerCase()}">${t}</span>`).join("")}
-      </div>
+  list.forEach((p, i) => {
+    const item = document.createElement("div");
+    item.className = "pkm-item";
+    item.innerHTML = `
+      <span class="pkm-number">#${p.number ?? '-'}</span>
+      <img src="${p.sprite}" alt="${capitalizeName(p.name)}" />
+      <span>${capitalizeName(p.name)}</span>
     `;
-    div.onclick = () => showOverlay(p);
-    box.appendChild(div);
+    item.onclick = () => showOverlay(p);
+    box.appendChild(item);
   });
 }
 
 async function loadMore() {
-  toggleSpinner(true); // Spinner AN
-
-  await new Promise(resolve => setTimeout(resolve, 300)); // Spinner sichtbar lassen
-
+  toggleSpinner(true);
+  await new Promise(resolve => setTimeout(resolve, 300));
   const nextChunk = allPokemon.slice(currentList.length, currentList.length + LIST_STEP);
   currentList = [...currentList, ...nextChunk];
   render(nextChunk);
-
-  toggleSpinner(false); // Spinner AUS
+  toggleSpinner(false);
 }
 
 function searchPokemon(e) {
@@ -90,11 +78,13 @@ function searchPokemon(e) {
 
 function searchLive() {
   const val = document.getElementById("mySearch").value.toLowerCase();
-  if (val.length >= 3) {
+  if (val.length >= 1) {
     const filtered = allPokemon.filter(p => p.name.toLowerCase().includes(val));
     render(filtered, true);
+    document.getElementById("load-more").style.display = "none";
   } else {
     render(currentList, true);
+    document.getElementById("load-more").style.display = "block";
   }
 }
 
@@ -102,8 +92,12 @@ function toggleSpinner(show) {
   document.getElementById('spinner').style.display = show ? 'flex' : 'none';
 }
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+function capitalizeName(name) {
+  if (!name) return '-';
+  return name
+    .split(/[\s\-]/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(name.includes('-') ? '-' : ' ');
 }
 
 async function showOverlay(pokemon) {
@@ -111,67 +105,64 @@ async function showOverlay(pokemon) {
   const overlayCard = document.getElementById('overlay-card');
   const overlayBg = document.getElementById('overlay-bg');
   document.getElementById('overlay-img').src = pokemon.sprite;
-  document.getElementById('overlay-name').textContent = capitalize(pokemon.name);
-  document.getElementById('overlay-types').innerHTML = renderTypes(pokemon.types);
+  document.getElementById('overlay-name').textContent = capitalizeName(pokemon.name);
+  document.getElementById('overlay-type').innerHTML = renderType(pokemon.type);
 
-  overlayCard.className = ''; // Reset
-  overlayCard.classList.add('type-bg-' + pokemon.types[0].toLowerCase());
+  overlayCard.className = '';
+  const type = Array.isArray(pokemon.type) && pokemon.type.length > 0
+  ? pokemon.type[0].toLowerCase()
+  : 'normal';
+  overlayCard.classList.add('type-bg-' + type);
 
-  const { statsHTML, abilities, flavor, evolution } = await fetchPokemonDetails(pokemon.name);
-  document.getElementById('overlay-info').innerHTML = renderInfo({ flavor, abilities, statsHTML, evolution });
+  document.getElementById('overlay-info').innerHTML = renderInfo(pokemon);
   overlayBg.style.display = 'flex';
 
   currentIndex = allPokemon.findIndex(p => p.name === pokemon.name);
 }
 
-function renderTypes(types) {
-  return types.map(t => `<span class="type-tag type-${t.toLowerCase()}">${t}</span>`).join('');
+function renderType(type) {
+  if (!Array.isArray(type)) return '<span>-</span>';
+  let html = '';
+  for (let i = 0; i < type.length; i++) {
+    html += `<span class="type-tag type-${type[i].toLowerCase()}">${type[i]}</span>`;
+  }
+  return html;
 }
 
-function renderInfo({ flavor, abilities, statsHTML, evolution }) {
+function renderInfo(pokemon) {
   return `
-    <br><div>${flavor}</div>
-    <br><div><strong>Abilities:</strong> ${abilities}</div>
-    <div><strong>Stats:</strong><br>${statsHTML}</div><br>
-    <div><strong>Evolution:</strong> ${evolution}</div><br>
+
+    <div class="pkm-grid">
+      <div><strong>Größe:</strong><br><span>${pokemon.height ? pokemon.height + ' m' : '-'}</span></div><br>
+      <div><strong>Gewicht:</strong><br><span>${pokemon.weight ? pokemon.weight + ' kg' : '-'}</span></div>
+    </div>
+    <div class="pkm-section">
+      <strong>Fähigkeiten:</strong>
+      <div>${pokemon.abilities ? pokemon.abilities.join(", ") : '-'}</div>
+    </div>
+    <div class="pkm-section">
+      <strong>Werte:</strong>
+      <ul>
+        ${
+          pokemon.stats
+            ? pokemon.stats
+                .map(stat => `<li>${stat.name}: ${stat.base}</li>`)
+                .join("")
+            : "<li>-</li>"
+        }
+      </ul>
+    </div>
+    <div class="pkm-section">
+      <strong>Entwicklung:</strong>
+      <div>${pokemon.evolution ? pokemon.evolution.join(" → ") : '-'}</div>
+    </div>
   `;
 }
 
-async function fetchPokemonDetails(name) {
-  try {
-    const res = await fetch(`${POKEAPI_URL}${name.toLowerCase()}`);
-    const data = await res.json();
-
-    const statsHTML = data.stats.map(s => `<div><strong>${s.stat.name}</strong>: ${s.base_stat}</div>`).join('');
-    const abilities = data.abilities.map(a => a.ability.name).join(', ');
-
-    const speciesRes = await fetch(data.species.url);
-    const speciesData = await speciesRes.json();
-    const flavor = speciesData.flavor_text_entries.find(e => e.language.name === 'en')?.flavor_text.replace(/[\n\f]/g, ' ') ?? '-';
-
-    const evoRes = await fetch(speciesData.evolution_chain.url);
-    const evoData = await evoRes.json();
-    const evolution = parseEvolutionChain(evoData.chain);
-
-    return { statsHTML, abilities, flavor, evolution };
-  } catch (e) {
-    console.warn("Fehler bei Details:", e);
-    return { statsHTML: '-', abilities: '-', flavor: '-', evolution: '-' };
-  }
-}
-
-function parseEvolutionChain(chain) {
-  const evos = [chain.species.name];
-  while (chain.evolves_to?.[0]) {
-    chain = chain.evolves_to[0];
-    evos.push(chain.species.name);
-  }
-  return evos.join(' → ');
-}
 
 function closeOverlay() {
-  document.getElementById('overlay-bg').style.display = 'none';
   document.body.classList.remove('noscroll');
+  document.getElementById('overlay-bg').style.display = 'none';
 }
 
 function showNext() {

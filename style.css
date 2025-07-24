@@ -67,8 +67,8 @@ h2 {
 }
 
 .datenschutz {
-  padding-left: 400px;
-  padding-right: 400px;
+  max-width: 500px;
+  margin: 0 auto;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
@@ -88,9 +88,19 @@ h2 {
   width: 100%;
 }
 
+.pkm-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
 .pkm-item {
   width: 140px;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   background: #e9e3c7;
   border-radius: 12px;
@@ -99,13 +109,15 @@ h2 {
 }
 
 #overlay-bg {
+  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: none;
-  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background: rgba(0,0,0,0.5);
   justify-content: center;
-  z-index: 10000;
+  align-items: center;
 }
 
 #overlay-card {
@@ -134,6 +146,12 @@ h2 {
   text-align: center;
 }
 
+#overlay-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
 .overlay-nav {
   margin-top: 10px;
   text-align: center;
@@ -148,6 +166,13 @@ h2 {
 .overlay-types {
   display: flex;
   align-items: center;
+}
+
+#overlay-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 10px;
 }
 
 .pokemon-card {
@@ -203,25 +228,24 @@ h2 {
   margin: 0 auto;
 }
 
-
-#overlay-card.type-bg-bug       { background-color: #A8B820; color: black; }
-#overlay-card.type-bg-flying    { background-color: #A890F0; color: black; }
-#overlay-card.type-bg-fire      { background-color: #F08030; color: black; }
-#overlay-card.type-bg-water     { background-color: #6890F0; color: black; }
-#overlay-card.type-bg-grass     { background-color: #78C850; color: black; }
-#overlay-card.type-bg-poison    { background-color: #A040A0; color: black; }
-#overlay-card.type-bg-electric  { background-color: #F8D030; color: black; }
-#overlay-card.type-bg-psychic   { background-color: #F85888; color: black; }
-#overlay-card.type-bg-ice       { background-color: #98D8D8; color: black; }
-#overlay-card.type-bg-rock      { background-color: #B8A038; color: black; }
-#overlay-card.type-bg-ground    { background-color: #E0C068; color: black; }
-#overlay-card.type-bg-dragon    { background-color: #7038F8; color: black; }
-#overlay-card.type-bg-dark      { background-color: #705848; color: black; }
-#overlay-card.type-bg-steel     { background-color: #B8B8D0; color: black; }
-#overlay-card.type-bg-fairy     { background-color: #EE99AC; color: black; }
-#overlay-card.type-bg-fighting  { background-color: #C03028; color: black; }
-#overlay-card.type-bg-ghost     { background-color: #705898; color: black; }
-#overlay-card.type-bg-normal    { background-color: #A8A878; color: black; }
+#overlay-card.type-bg-bug      { background-color: #A8B820; color: black; }
+#overlay-card.type-bg-flying   { background-color: #A890F0; color: black; }
+#overlay-card.type-bg-fire     { background-color: #F08030; color: black; }
+#overlay-card.type-bg-water    { background-color: #6890F0; color: black; }
+#overlay-card.type-bg-grass    { background-color: #78C850; color: black; }
+#overlay-card.type-bg-poison   { background-color: #A040A0; color: black; }
+#overlay-card.type-bg-electric { background-color: #F8D030; color: black; }
+#overlay-card.type-bg-psychic  { background-color: #F85888; color: black; }
+#overlay-card.type-bg-ice      { background-color: #98D8D8; color: black; }
+#overlay-card.type-bg-rock     { background-color: #B8A038; color: black; }
+#overlay-card.type-bg-ground   { background-color: #E0C068; color: black; }
+#overlay-card.type-bg-dragon   { background-color: #7038F8; color: black; }
+#overlay-card.type-bg-dark     { background-color: #705848; color: black; }
+#overlay-card.type-bg-steel    { background-color: #B8B8D0; color: black; }
+#overlay-card.type-bg-fairy    { background-color: #EE99AC; color: black; }
+#overlay-card.type-bg-fighting { background-color: #C03028; color: black; }
+#overlay-card.type-bg-ghost    { background-color: #705898; color: black; }
+#overlay-card.type-bg-normal   { background-color: #A8A878; color: black; }
 
 .search {
   display: flex;
@@ -350,24 +374,20 @@ footer {
   .pokemon-grid {
     grid-template-columns: repeat(4, 1fr);
   }
+  .datenschutz {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
 }
 
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) {
   .pokemon-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-}
-
-
-@media (min-width: 480px) and (max-width: 767px) {
-  .pokemon-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .pokemon-card {
-    padding: 1rem;
-    font-size: 0.9rem;
+  .datenschutz {
+    padding-left: 100px;
+    padding-right: 100px;
   }
 }
 
@@ -394,6 +414,10 @@ footer {
   .navbar {
     flex-direction: column;
     align-items: center;
+  }
+  .datenschutz {
+    padding-left: 100px;
+    padding-right: 100px;
   }
 }
 
